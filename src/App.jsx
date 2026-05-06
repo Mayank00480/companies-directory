@@ -1,9 +1,9 @@
-
+import Body from "./component/Body";
 function App() {
 
   return (
     <>
-      Initialised App
+      <Body />
     </>
   )
 }

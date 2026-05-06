@@ -1,0 +1,42 @@
+[
+    {
+      "id": 1,
+      "name": "TechNova Solutions",
+      "location": "Bangalore, India",
+      "industry": "Information Technology",
+      "founded": 2015,
+      "employees": 250,
+      "website": "https://technova.com",
+      "isHiring": true
+    },
+    {
+      "id": 2,
+      "name": "GreenLeaf Agro",
+      "location": "Pune, India",
+      "industry": "Agriculture",
+      "founded": 2010,
+      "employees": 120,
+      "website": "https://greenleafagro.com",
+      "isHiring": false
+    },
+    {
+      "id": 3,
+      "name": "FinEdge Corp",
+      "location": "Mumbai, India",
+      "industry": "Finance",
+      "founded": 2018,
+      "employees": 80,
+      "website": "https://finedge.com",
+      "isHiring": true
+    },
+    {
+      "id": 4,
+      "name": "HealthPlus Labs",
+      "location": "Delhi, India",
+      "industry": "Healthcare",
+      "founded": 2012,
+      "employees": 300,
+      "website": "https://healthplus.com",
+      "isHiring": true
+    }
+  ]
