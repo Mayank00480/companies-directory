@@ -1,19 +1,16 @@
 import {
   Box,
   Button,
-  Divider,
+
   FormControl,
   InputLabel,
   MenuItem,
   Select,
   TextField,
-  Typography,
+
 } from "@mui/material";
-import CompanyCard from "./CompanyCard";
 
 const Header = ({ companies, filters, onFilterChange }) => {
-  const totalCompanies = companies.length;
-  const hiringCount = companies.filter((c) => c.isHiring).length;
   const industries = [...new Set(companies.map((c) => c.industry))];
   const locations = [...new Set(companies.map((c) => c.location))];
 
@@ -30,7 +27,7 @@ const Header = ({ companies, filters, onFilterChange }) => {
       >
         {/* Search by Name */}
         <TextField
-          label="Search Name"
+          label="Search by Company Name"
           placeholder="e.g. TechNova..."
           size="small"
           value={filters.name}

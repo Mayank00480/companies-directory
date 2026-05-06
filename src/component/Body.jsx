@@ -1,10 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
+  Alert,
   Box,
+  Button,
   Chip,
   CircularProgress,
   Link,
   Paper,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -17,9 +20,28 @@ import Header from "./Header";
 
 const COLUMNS = ["#", "Name", "Location", "Industry", "Founded", "Employees", "Website", "Hiring"];
 const PAGE_SIZE = 10;
+const SKELETON_ROWS = 8;
+
+// ── Skeleton row shown while data is loading ──────────────────────────────────
+const SkeletonRow = () => (
+  <TableRow>
+    {COLUMNS.map((col) => (
+      <TableCell key={col}>
+        <Skeleton
+          variant="rectangular"
+          height={20}
+          sx={{ borderRadius: "6px", bgcolor: "#edf2f7" }}
+          animation="wave"
+        />
+      </TableCell>
+    ))}
+  </TableRow>
+);
 
 const Body = () => {
   const [companies, setCompanies] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [filters, setFilters] = useState({
     name: "",
     industry: "",
@@ -29,11 +51,31 @@ const Body = () => {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const sentinelRef = useRef(null);
 
-  useEffect(() => {
+  const fetchCompanies = useCallback(() => {
+    setLoading(true);
+    setError(null);
+
     fetch("/data/companies.json")
-      .then((res) => res.json())
-      .then((data) => setCompanies(data));
+      .then((res) => {
+        if (!res.ok) throw new Error(`Failed to load data (HTTP ${res.status})`);
+        return res.json();
+      })
+      .then((data) => {
+        if (!Array.isArray(data)) throw new Error("Unexpected data format received.");
+        setCompanies(data);
+        setVisibleCount(PAGE_SIZE);
+      })
+      .catch((err) => {
+        setError(err.message || "Something went wrong. Please try again.");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
+
+  useEffect(() => {
+    fetchCompanies();
+  }, [fetchCompanies]);
 
   const handleFilterChange = (key, value) => {
     if (key === "reset") {
@@ -58,7 +100,6 @@ const Body = () => {
   const visibleRows = filtered.slice(0, visibleCount);
   const hasMore = visibleCount < filtered.length;
 
-  // Load next page when sentinel enters the viewport
   const loadMore = useCallback(() => {
     setVisibleCount((prev) => prev + PAGE_SIZE);
   }, []);
@@ -66,19 +107,67 @@ const Body = () => {
   useEffect(() => {
     const sentinel = sentinelRef.current;
     if (!sentinel) return;
-
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && hasMore) {
-          loadMore();
-        }
+        if (entries[0].isIntersecting && hasMore) loadMore();
       },
       { threshold: 0.1 }
     );
-
     observer.observe(sentinel);
     return () => observer.disconnect();
   }, [hasMore, loadMore]);
+
+  // ── Full-page error state ────────────────────────────────────────────────────
+  if (error) {
+    return (
+      <Box
+        sx={{
+          minHeight: "100vh",
+          bgcolor: "#f0f4f8",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          p: 3,
+        }}
+      >
+        <Paper
+          elevation={2}
+          sx={{
+            borderRadius: "16px",
+            p: 5,
+            textAlign: "center",
+            maxWidth: 480,
+            width: "100%",
+          }}
+        >
+          <Typography fontSize="52px" lineHeight={1} mb={2}>⚠️</Typography>
+          <Typography variant="h6" fontWeight={700} color="#1a202c" mb={1}>
+            Failed to Load Data
+          </Typography>
+          <Alert
+            severity="error"
+            sx={{ mb: 3, textAlign: "left", borderRadius: "10px" }}
+          >
+            {error}
+          </Alert>
+          <Button
+            variant="contained"
+            onClick={fetchCompanies}
+            sx={{
+              bgcolor: "#4299e1",
+              borderRadius: "8px",
+              px: 4,
+              textTransform: "none",
+              fontWeight: 600,
+              "&:hover": { bgcolor: "#3182ce" },
+            }}
+          >
+            🔄 Try Again
+          </Button>
+        </Paper>
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{ minHeight: "100vh", bgcolor: "#f0f4f8", py: 4, px: 3 }}>
@@ -86,13 +175,21 @@ const Body = () => {
         elevation={2}
         sx={{ maxWidth: 1200, mx: "auto", borderRadius: "16px", overflow: "hidden" }}
       >
-        {/* Card Header */}
+        {/* Card Header — disabled while loading */}
         <Box sx={{ px: 4, py: 3.5, borderBottom: "1px solid #e2e8f0", bgcolor: "#fff" }}>
-          <Header
-            companies={companies}
-            filters={filters}
-            onFilterChange={handleFilterChange}
-          />
+          {loading ? (
+           <Box sx={{ display: "flex", gap: 1.5 }}>
+           {[2, 1, 1, 1, 0.4].map((flex, i) => (
+             <Skeleton key={i} variant="rectangular" height={40} sx={{ flex, borderRadius: "8px" }} animation="wave" />
+           ))}
+         </Box>
+          ) : (
+            <Header
+              companies={companies}
+              filters={filters}
+              onFilterChange={handleFilterChange}
+            />
+          )}
         </Box>
 
         {/* Results Count Bar */}
@@ -107,21 +204,23 @@ const Body = () => {
             justifyContent: "space-between",
           }}
         >
-          <Typography variant="body2" sx={{ color: "#718096" }}>
-            Showing{" "}
-            <Box component="strong" sx={{ color: "#2d3748" }}>
-              {visibleRows.length}
-            </Box>{" "}
-            of{" "}
-            <Box component="strong" sx={{ color: "#2d3748" }}>
-              {filtered.length}
-            </Box>{" "}
-            companies
-          </Typography>
-          {hasMore && (
-            <Typography variant="body2" sx={{ color: "#a0aec0", fontSize: "12px" }}>
-              Scroll down to load more
-            </Typography>
+          {loading ? (
+            <Skeleton variant="text" width={180} height={20} animation="wave" />
+          ) : (
+            <>
+              <Typography variant="body2" sx={{ color: "#718096" }}>
+                Showing{" "}
+                <Box component="strong" sx={{ color: "#2d3748" }}>{visibleRows.length}</Box>
+                {" "}of{" "}
+                <Box component="strong" sx={{ color: "#2d3748" }}>{filtered.length}</Box>
+                {" "}companies
+              </Typography>
+              {hasMore && (
+                <Typography variant="body2" sx={{ color: "#a0aec0", fontSize: "12px" }}>
+                  Scroll down to load more
+                </Typography>
+              )}
+            </>
           )}
         </Box>
 
@@ -147,8 +246,17 @@ const Body = () => {
                 ))}
               </TableRow>
             </TableHead>
+
             <TableBody>
-              {visibleRows.length > 0 ? (
+              {/* ── Loading: skeleton rows ── */}
+              {loading &&
+                Array.from({ length: SKELETON_ROWS }).map((_, i) => (
+                  <SkeletonRow key={i} />
+                ))
+              }
+
+              {/* ── Loaded: data rows ── */}
+              {!loading && visibleRows.length > 0 &&
                 visibleRows.map((company, index) => (
                   <TableRow
                     key={company.id}
@@ -158,24 +266,14 @@ const Body = () => {
                       transition: "background 0.15s",
                     }}
                   >
-                    <TableCell sx={{ color: "#a0aec0", fontSize: "13px" }}>
-                      {company.id}
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: 600, color: "#1a202c" }}>
-                      {company.name}
-                    </TableCell>
+                    <TableCell sx={{ color: "#a0aec0", fontSize: "13px" }}>{company.id}</TableCell>
+                    <TableCell sx={{ fontWeight: 600, color: "#1a202c" }}>{company.name}</TableCell>
                     <TableCell>{company.location}</TableCell>
                     <TableCell>
                       <Chip
                         label={company.industry}
                         size="small"
-                        sx={{
-                          bgcolor: "#ebf8ff",
-                          color: "#2b6cb0",
-                          fontWeight: 600,
-                          fontSize: "12px",
-                          border: "none",
-                        }}
+                        sx={{ bgcolor: "#ebf8ff", color: "#2b6cb0", fontWeight: 600, fontSize: "12px", border: "none" }}
                       />
                     </TableCell>
                     <TableCell>{company.founded}</TableCell>
@@ -206,20 +304,25 @@ const Body = () => {
                     </TableCell>
                   </TableRow>
                 ))
-              ) : (
+              }
+
+              {/* ── Empty: no results after filtering ── */}
+              {!loading && filtered.length === 0 && (
                 <TableRow>
-                  <TableCell
-                    colSpan={COLUMNS.length}
-                    align="center"
-                    sx={{ py: 6, color: "#a0aec0", fontSize: "15px" }}
-                  >
-                    😕 No companies match your filters.
+                  <TableCell colSpan={COLUMNS.length} align="center" sx={{ py: 6 }}>
+                    <Typography fontSize="40px">🔍</Typography>
+                    <Typography variant="body1" fontWeight={600} color="#2d3748" mt={1}>
+                      No companies found
+                    </Typography>
+                    <Typography variant="body2" color="#a0aec0" mt={0.5}>
+                      Try adjusting your filters or search term.
+                    </Typography>
                   </TableCell>
                 </TableRow>
               )}
 
-              {/* Loading row shown while more items exist */}
-              {hasMore && (
+              {/* ── Infinite scroll: spinner row ── */}
+              {!loading && hasMore && (
                 <TableRow>
                   <TableCell colSpan={COLUMNS.length} align="center" sx={{ py: 2, border: 0 }}>
                     <CircularProgress size={22} thickness={4} sx={{ color: "#4299e1" }} />
@@ -230,11 +333,11 @@ const Body = () => {
           </Table>
         </TableContainer>
 
-        {/* Invisible sentinel — IntersectionObserver watches this */}
+        {/* Infinite scroll sentinel */}
         <Box ref={sentinelRef} sx={{ height: 1 }} />
 
-        {/* End of list message */}
-        {!hasMore && filtered.length > 0 && (
+        {/* End of list */}
+        {!loading && !hasMore && filtered.length > 0 && (
           <Box sx={{ py: 2, textAlign: "center" }}>
             <Typography variant="body2" sx={{ color: "#a0aec0" }}>
               ✅ All {filtered.length} companies loaded
