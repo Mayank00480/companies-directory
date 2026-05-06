@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Box,
   Chip,
+  CircularProgress,
   Link,
   Paper,
   Table,
@@ -15,6 +16,7 @@ import {
 import Header from "./Header";
 
 const COLUMNS = ["#", "Name", "Location", "Industry", "Founded", "Employees", "Website", "Hiring"];
+const PAGE_SIZE = 10;
 
 const Body = () => {
   const [companies, setCompanies] = useState([]);
@@ -24,6 +26,8 @@ const Body = () => {
     location: "",
     isHiring: "",
   });
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const sentinelRef = useRef(null);
 
   useEffect(() => {
     fetch("/data/companies.json")
@@ -37,6 +41,7 @@ const Body = () => {
     } else {
       setFilters((prev) => ({ ...prev, [key]: value }));
     }
+    setVisibleCount(PAGE_SIZE);
   };
 
   const filtered = useMemo(() => {
@@ -50,26 +55,39 @@ const Body = () => {
     });
   }, [companies, filters]);
 
+  const visibleRows = filtered.slice(0, visibleCount);
+  const hasMore = visibleCount < filtered.length;
+
+  // Load next page when sentinel enters the viewport
+  const loadMore = useCallback(() => {
+    setVisibleCount((prev) => prev + PAGE_SIZE);
+  }, []);
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          loadMore();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [hasMore, loadMore]);
+
   return (
     <Box sx={{ minHeight: "100vh", bgcolor: "#f0f4f8", py: 4, px: 3 }}>
       <Paper
         elevation={2}
-        sx={{
-          maxWidth: 1200,
-          mx: "auto",
-          borderRadius: "16px",
-          overflow: "hidden",
-        }}
+        sx={{ maxWidth: 1200, mx: "auto", borderRadius: "16px", overflow: "hidden" }}
       >
         {/* Card Header */}
-        <Box
-          sx={{
-            px: 4,
-            py: 3.5,
-            borderBottom: "1px solid #e2e8f0",
-            bgcolor: "#fff",
-          }}
-        >
+        <Box sx={{ px: 4, py: 3.5, borderBottom: "1px solid #e2e8f0", bgcolor: "#fff" }}>
           <Header
             companies={companies}
             filters={filters}
@@ -84,15 +102,27 @@ const Body = () => {
             py: 1.5,
             bgcolor: "#fafbfc",
             borderBottom: "1px solid #e2e8f0",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
           }}
         >
           <Typography variant="body2" sx={{ color: "#718096" }}>
             Showing{" "}
-            <Box component="strong" sx={{ color: "#2d3748" }}>{filtered.length}</Box>
-            {" "}of{" "}
-            <Box component="strong" sx={{ color: "#2d3748" }}>{companies.length}</Box>
-            {" "}companies
+            <Box component="strong" sx={{ color: "#2d3748" }}>
+              {visibleRows.length}
+            </Box>{" "}
+            of{" "}
+            <Box component="strong" sx={{ color: "#2d3748" }}>
+              {filtered.length}
+            </Box>{" "}
+            companies
           </Typography>
+          {hasMore && (
+            <Typography variant="body2" sx={{ color: "#a0aec0", fontSize: "12px" }}>
+              Scroll down to load more
+            </Typography>
+          )}
         </Box>
 
         {/* Table */}
@@ -118,8 +148,8 @@ const Body = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filtered.length > 0 ? (
-                filtered.map((company, index) => (
+              {visibleRows.length > 0 ? (
+                visibleRows.map((company, index) => (
                   <TableRow
                     key={company.id}
                     sx={{
@@ -187,9 +217,30 @@ const Body = () => {
                   </TableCell>
                 </TableRow>
               )}
+
+              {/* Loading row shown while more items exist */}
+              {hasMore && (
+                <TableRow>
+                  <TableCell colSpan={COLUMNS.length} align="center" sx={{ py: 2, border: 0 }}>
+                    <CircularProgress size={22} thickness={4} sx={{ color: "#4299e1" }} />
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </TableContainer>
+
+        {/* Invisible sentinel — IntersectionObserver watches this */}
+        <Box ref={sentinelRef} sx={{ height: 1 }} />
+
+        {/* End of list message */}
+        {!hasMore && filtered.length > 0 && (
+          <Box sx={{ py: 2, textAlign: "center" }}>
+            <Typography variant="body2" sx={{ color: "#a0aec0" }}>
+              ✅ All {filtered.length} companies loaded
+            </Typography>
+          </Box>
+        )}
       </Paper>
     </Box>
   );

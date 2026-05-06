@@ -1,42 +1,61 @@
 [
-    {
-      "id": 1,
-      "name": "TechNova Solutions",
-      "location": "Bangalore, India",
-      "industry": "Information Technology",
-      "founded": 2015,
-      "employees": 250,
-      "website": "https://technova.com",
-      "isHiring": true
-    },
-    {
-      "id": 2,
-      "name": "GreenLeaf Agro",
-      "location": "Pune, India",
-      "industry": "Agriculture",
-      "founded": 2010,
-      "employees": 120,
-      "website": "https://greenleafagro.com",
-      "isHiring": false
-    },
-    {
-      "id": 3,
-      "name": "FinEdge Corp",
-      "location": "Mumbai, India",
-      "industry": "Finance",
-      "founded": 2018,
-      "employees": 80,
-      "website": "https://finedge.com",
-      "isHiring": true
-    },
-    {
-      "id": 4,
-      "name": "HealthPlus Labs",
-      "location": "Delhi, India",
-      "industry": "Healthcare",
-      "founded": 2012,
-      "employees": 300,
-      "website": "https://healthplus.com",
-      "isHiring": true
-    }
+    { "id": 1, "name": "TechNova Solutions", "location": "Bangalore, India", "industry": "Information Technology", "founded": 2015, "employees": 250, "website": "https://technova.com", "isHiring": true },
+    { "id": 2, "name": "GreenLeaf Agro", "location": "Pune, India", "industry": "Agriculture", "founded": 2010, "employees": 120, "website": "https://greenleafagro.com", "isHiring": false },
+    { "id": 3, "name": "FinEdge Corp", "location": "Mumbai, India", "industry": "Finance", "founded": 2018, "employees": 80, "website": "https://finedge.com", "isHiring": true },
+    { "id": 4, "name": "HealthPlus Labs", "location": "Delhi, India", "industry": "Healthcare", "founded": 2012, "employees": 300, "website": "https://healthplus.com", "isHiring": true },
+  
+    { "id": 5, "name": "SkyNet Systems", "location": "Hyderabad, India", "industry": "IT", "founded": 2016, "employees": 180, "website": "https://skynet.com", "isHiring": true },
+    { "id": 6, "name": "UrbanBuild Infra", "location": "Chennai, India", "industry": "Construction", "founded": 2008, "employees": 500, "website": "https://urbanbuild.com", "isHiring": false },
+    { "id": 7, "name": "EduSmart", "location": "Noida, India", "industry": "Education", "founded": 2019, "employees": 90, "website": "https://edusmart.com", "isHiring": true },
+    { "id": 8, "name": "QuickMart Retail", "location": "Kolkata, India", "industry": "Retail", "founded": 2011, "employees": 220, "website": "https://quickmart.com", "isHiring": false },
+    { "id": 9, "name": "AutoDrive Motors", "location": "Pune, India", "industry": "Automobile", "founded": 2005, "employees": 700, "website": "https://autodrive.com", "isHiring": true },
+    { "id": 10, "name": "Foodies Hub", "location": "Delhi, India", "industry": "Food & Beverage", "founded": 2017, "employees": 150, "website": "https://foodieshub.com", "isHiring": true },
+  
+    { "id": 11, "name": "CloudNet Tech", "location": "Bangalore, India", "industry": "Cloud Computing", "founded": 2020, "employees": 60, "website": "https://cloudnet.com", "isHiring": true },
+    { "id": 12, "name": "SecureShield", "location": "Hyderabad, India", "industry": "Cybersecurity", "founded": 2014, "employees": 140, "website": "https://secureshield.com", "isHiring": true },
+    { "id": 13, "name": "TravelBee", "location": "Goa, India", "industry": "Tourism", "founded": 2013, "employees": 75, "website": "https://travelbee.com", "isHiring": false },
+    { "id": 14, "name": "MedCare Pharma", "location": "Ahmedabad, India", "industry": "Pharmaceuticals", "founded": 2009, "employees": 320, "website": "https://medcare.com", "isHiring": true },
+    { "id": 15, "name": "EcoEnergy", "location": "Jaipur, India", "industry": "Energy", "founded": 2011, "employees": 200, "website": "https://ecoenergy.com", "isHiring": false },
+  
+    { "id": 16, "name": "NextGen AI", "location": "Bangalore, India", "industry": "Artificial Intelligence", "founded": 2021, "employees": 50, "website": "https://nextgenai.com", "isHiring": true },
+    { "id": 17, "name": "ShopEase", "location": "Mumbai, India", "industry": "E-commerce", "founded": 2018, "employees": 400, "website": "https://shopease.com", "isHiring": true },
+    { "id": 18, "name": "FinTrust Bank", "location": "Delhi, India", "industry": "Banking", "founded": 2000, "employees": 1200, "website": "https://fintrust.com", "isHiring": false },
+    { "id": 19, "name": "LogiTrack", "location": "Gurgaon, India", "industry": "Logistics", "founded": 2016, "employees": 260, "website": "https://logitrack.com", "isHiring": true },
+    { "id": 20, "name": "BuildPro", "location": "Chandigarh, India", "industry": "Real Estate", "founded": 2007, "employees": 350, "website": "https://buildpro.com", "isHiring": false },
+  
+    { "id": 21, "name": "FarmFresh", "location": "Ludhiana, India", "industry": "Agriculture", "founded": 2012, "employees": 110, "website": "https://farmfresh.com", "isHiring": true },
+    { "id": 22, "name": "GameZone Studios", "location": "Pune, India", "industry": "Gaming", "founded": 2019, "employees": 70, "website": "https://gamezone.com", "isHiring": true },
+    { "id": 23, "name": "SmartHome Tech", "location": "Bangalore, India", "industry": "IoT", "founded": 2017, "employees": 95, "website": "https://smarthome.com", "isHiring": true },
+    { "id": 24, "name": "CleanCity Services", "location": "Delhi, India", "industry": "Sanitation", "founded": 2010, "employees": 210, "website": "https://cleancity.com", "isHiring": false },
+    { "id": 25, "name": "BrightAds", "location": "Mumbai, India", "industry": "Advertising", "founded": 2015, "employees": 130, "website": "https://brightads.com", "isHiring": true },
+  
+    { "id": 26, "name": "DataMinds", "location": "Hyderabad, India", "industry": "Data Analytics", "founded": 2018, "employees": 85, "website": "https://dataminds.com", "isHiring": true },
+    { "id": 27, "name": "LegalEase", "location": "Delhi, India", "industry": "Legal Services", "founded": 2011, "employees": 60, "website": "https://legalease.com", "isHiring": false },
+    { "id": 28, "name": "FitLife Gym", "location": "Noida, India", "industry": "Fitness", "founded": 2016, "employees": 45, "website": "https://fitlife.com", "isHiring": true },
+    { "id": 29, "name": "PetCare Plus", "location": "Chennai, India", "industry": "Pet Services", "founded": 2019, "employees": 30, "website": "https://petcare.com", "isHiring": true },
+    { "id": 30, "name": "Eventify", "location": "Goa, India", "industry": "Event Management", "founded": 2014, "employees": 100, "website": "https://eventify.com", "isHiring": false },
+  
+    { "id": 31, "name": "PrintWorks", "location": "Kolkata, India", "industry": "Printing", "founded": 2006, "employees": 150, "website": "https://printworks.com", "isHiring": false },
+    { "id": 32, "name": "CodeCrafters", "location": "Bangalore, India", "industry": "Software Development", "founded": 2020, "employees": 55, "website": "https://codecrafters.com", "isHiring": true },
+    { "id": 33, "name": "SafeTravel", "location": "Delhi, India", "industry": "Insurance", "founded": 2013, "employees": 200, "website": "https://safetravel.com", "isHiring": true },
+    { "id": 34, "name": "WaterPure", "location": "Jaipur, India", "industry": "Water Solutions", "founded": 2009, "employees": 175, "website": "https://waterpure.com", "isHiring": false },
+    { "id": 35, "name": "FreshBite", "location": "Mumbai, India", "industry": "Food Delivery", "founded": 2018, "employees": 300, "website": "https://freshbite.com", "isHiring": true },
+  
+    { "id": 36, "name": "CryptoEdge", "location": "Bangalore, India", "industry": "Blockchain", "founded": 2021, "employees": 40, "website": "https://cryptoedge.com", "isHiring": true },
+    { "id": 37, "name": "EduWorld", "location": "Pune, India", "industry": "Education", "founded": 2012, "employees": 210, "website": "https://eduworld.com", "isHiring": false },
+    { "id": 38, "name": "AgriBoost", "location": "Lucknow, India", "industry": "Agriculture", "founded": 2015, "employees": 130, "website": "https://agriboost.com", "isHiring": true },
+    { "id": 39, "name": "SkyHigh Airlines", "location": "Delhi, India", "industry": "Aviation", "founded": 2003, "employees": 2000, "website": "https://skyhigh.com", "isHiring": false },
+    { "id": 40, "name": "HomeDecor Hub", "location": "Jaipur, India", "industry": "Interior Design", "founded": 2016, "employees": 95, "website": "https://homedecor.com", "isHiring": true },
+  
+    { "id": 41, "name": "QuickFix Repairs", "location": "Chandigarh, India", "industry": "Home Services", "founded": 2017, "employees": 80, "website": "https://quickfix.com", "isHiring": true },
+    { "id": 42, "name": "MediaBuzz", "location": "Mumbai, India", "industry": "Media", "founded": 2010, "employees": 220, "website": "https://mediabuzz.com", "isHiring": false },
+    { "id": 43, "name": "SolarGrid", "location": "Ahmedabad, India", "industry": "Renewable Energy", "founded": 2014, "employees": 300, "website": "https://solargrid.com", "isHiring": true },
+    { "id": 44, "name": "PackNMove", "location": "Delhi, India", "industry": "Logistics", "founded": 2011, "employees": 150, "website": "https://packnmove.com", "isHiring": false },
+    { "id": 45, "name": "BeautyGlow", "location": "Bangalore, India", "industry": "Cosmetics", "founded": 2018, "employees": 60, "website": "https://beautyglow.com", "isHiring": true },
+  
+    { "id": 46, "name": "HealthTrack", "location": "Hyderabad, India", "industry": "Health Tech", "founded": 2020, "employees": 70, "website": "https://healthtrack.com", "isHiring": true },
+    { "id": 47, "name": "RideNow", "location": "Delhi, India", "industry": "Transportation", "founded": 2015, "employees": 500, "website": "https://ridenow.com", "isHiring": true },
+    { "id": 48, "name": "BookNest", "location": "Kolkata, India", "industry": "Publishing", "founded": 2007, "employees": 140, "website": "https://booknest.com", "isHiring": false },
+    { "id": 49, "name": "AI Vision", "location": "Bangalore, India", "industry": "AI & ML", "founded": 2022, "employees": 35, "website": "https://aivision.com", "isHiring": true },
+    { "id": 50, "name": "SecureNet", "location": "Noida, India", "industry": "Cybersecurity", "founded": 2016, "employees": 110, "website": "https://securenet.com", "isHiring": true }
   ]

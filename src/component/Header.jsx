@@ -19,27 +19,7 @@ const Header = ({ companies, filters, onFilterChange }) => {
 
   return (
     <Box>
-      {/* Title */}
-      <Box sx={{ mb: 2.5 }}>
-        <Typography variant="h5" sx={{ fontWeight: 700, color: "#1a202c" }}>
-          🏢 Companies Directory
-        </Typography>
-        <Typography variant="body2" sx={{ color: "#718096", mt: 0.5 }}>
-          Browse and filter companies across industries
-        </Typography>
-      </Box>
-
-      {/* Stat Cards */}
-      <Box sx={{ display: "flex", gap: 1.5, flexWrap: "wrap", mb: 2.5 }}>
-        <CompanyCard icon="🏢" label="Total Companies" value={totalCompanies} accent="#4299e1" />
-        <CompanyCard icon="✅" label="Actively Hiring" value={hiringCount} accent="#48bb78" />
-        <CompanyCard icon="🏭" label="Industries" value={industries.length} accent="#ed8936" />
-        <CompanyCard icon="📍" label="Locations" value={locations.length} accent="#9f7aea" />
-      </Box>
-
-      <Divider sx={{ mb: 2.5 }} />
-
-      {/* Filter Controls */}
+     
       <Box
         sx={{
           display: "grid",
