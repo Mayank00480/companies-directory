@@ -50,6 +50,7 @@ const Body = () => {
   });
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const sentinelRef = useRef(null);
+  const tableContainerRef = useRef(null);
 
   const fetchCompanies = useCallback(() => {
     setLoading(true);
@@ -106,12 +107,13 @@ const Body = () => {
 
   useEffect(() => {
     const sentinel = sentinelRef.current;
-    if (!sentinel) return;
+    const container = tableContainerRef.current;
+    if (!sentinel || !container) return;
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasMore) loadMore();
       },
-      { threshold: 0.1 }
+      { threshold: 0.1, root: container }
     );
     observer.observe(sentinel);
     return () => observer.disconnect();
@@ -225,8 +227,30 @@ const Body = () => {
         </Box>
 
         {/* Table */}
-        <TableContainer>
-          <Table>
+        <TableContainer
+          ref={tableContainerRef}
+          sx={{
+            maxHeight: "69vh",
+            overflow: "auto",
+            "&::-webkit-scrollbar": {
+              width: "10px",
+              height: "8px",
+            },
+            "&::-webkit-scrollbar-track": {
+              bgcolor: "#e9eef4",
+              borderRadius: "100px",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              bgcolor: "#8a96a3",
+              borderRadius: "100px",
+              border: "2px solid #e9eef4",
+            },
+            "&::-webkit-scrollbar-thumb:hover": {
+              bgcolor: "#5a6470",
+            },
+          }}
+        >
+          <Table stickyHeader>
             <TableHead>
               <TableRow>
                 {COLUMNS.map((col) => (
@@ -331,10 +355,10 @@ const Body = () => {
               )}
             </TableBody>
           </Table>
-        </TableContainer>
 
-        {/* Infinite scroll sentinel */}
-        <Box ref={sentinelRef} sx={{ height: 1 }} />
+          {/* Infinite scroll sentinel — must be inside the scrollable container */}
+          <Box ref={sentinelRef} sx={{ height: 1 }} />
+        </TableContainer>
 
         {/* End of list */}
         {!loading && !hasMore && filtered.length > 0 && (
